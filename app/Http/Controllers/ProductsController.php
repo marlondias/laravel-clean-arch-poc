@@ -5,16 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use TheSource\Application\UseCases\CreateAProduct\InputBoundary;
-use TheSource\Application\UseCases\CreateAProduct\UseCaseInteractor;
+use TheSource\Application\UseCases\CreateAProduct\UseCaseInteractor as CreateProductUseCase;
 
 class ProductsController extends Controller
 {
-    protected UseCaseInteractor $createProductUseCase;
-
-    public function __construct(UseCaseInteractor $createProductUseCase) {
-        $this->createProductUseCase = $createProductUseCase;
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -32,10 +26,10 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProductUseCase $useCase, Request $request)
     {
         $input = new InputBoundary();
-        $output = $this->createProductUseCase->handle($input);
+        $output = $useCase->handle($input);
         return Response::json($output->toArray());
     }
 

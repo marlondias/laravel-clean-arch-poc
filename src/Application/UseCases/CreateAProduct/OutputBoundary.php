@@ -6,18 +6,18 @@ use TheSource\Application\UseCases\Contracts\OutputBoundaryInterface;
 
 class OutputBoundary implements OutputBoundaryInterface
 {
-    protected bool $wasInserted;
+    protected int $insertedId;
+
+    public function setInsertedId(int $value)
+    {
+        $this->insertedId = $value;
+    }
 
     public function toArray(): array
     {
         return [
-            'wasInserted' => $this->wasInserted
+            'insertedId' => $this->insertedId
         ];
-    }
-
-    public function setWasInserted(bool $value)
-    {
-        $this->wasInserted = $value;
     }
 
 }

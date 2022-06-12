@@ -12,5 +12,5 @@ interface ProductRepository
      */
     public function getRandomProducts(int $amount): array;
 
-    public function insertProduct(Product $product): bool;
+    public function insertProduct(Product $product): int;
 }

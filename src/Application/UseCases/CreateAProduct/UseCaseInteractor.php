@@ -18,9 +18,9 @@ class UseCaseInteractor
     public function handle(InputBoundary $input): OutputBoundary
     {
         $product = new Product();
-        $wasInserted = $this->productRepository->insertProduct($product);
+        $id = $this->productRepository->insertProduct($product);
         $output = new OutputBoundary();
-        $output->setWasInserted($wasInserted);
+        $output->setInsertedId($id);
         return $output;
     }
 
