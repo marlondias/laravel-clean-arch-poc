@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\StringHashingServiceImpl;
 use Illuminate\Support\ServiceProvider;
+use TheSource\Domain\Contracts\Services\StringHashingService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(StringHashingService::class, StringHashingServiceImpl::class);
     }
 
     /**
