@@ -3,8 +3,9 @@
 namespace TheSource\Domain\ValueObjects;
 
 use InvalidArgumentException;
+use TheSource\Domain\Contracts\ValueObject;
 
-final class EmailAddress
+final class EmailAddress implements ValueObject
 {
     protected string $fullAddress;
     protected string $localPart;
@@ -24,6 +25,15 @@ final class EmailAddress
         $this->fullAddress = $emailAddress;
         $this->localPart = $emailParts[1];
         $this->domainPart = $emailParts[2];
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'fullAddress' => $this->fullAddress,
+            'localPart' => $this->localPart,
+            'domainPart' => $this->domainPart,
+        ];
     }
 
     public function getFullAddress(): string

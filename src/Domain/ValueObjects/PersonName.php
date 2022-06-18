@@ -3,8 +3,9 @@
 namespace TheSource\Domain\ValueObjects;
 
 use InvalidArgumentException;
+use TheSource\Domain\Contracts\ValueObject;
 
-final class PersonName
+final class PersonName implements ValueObject
 {
     protected string $firstName;
     protected string $lastName;
@@ -25,6 +26,15 @@ final class PersonName
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->fullName = $firstName . (empty($lastName) ? " {$lastName}" : '');
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'fullName' => $this->fullName,
+        ];
     }
 
     public function getFirstName(): string
