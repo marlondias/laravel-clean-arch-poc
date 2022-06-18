@@ -21,6 +21,4 @@ abstract class Entity
 
     abstract public function toArray(): array;
 
-    abstract public function toObject(): stdClass;
-
 }
