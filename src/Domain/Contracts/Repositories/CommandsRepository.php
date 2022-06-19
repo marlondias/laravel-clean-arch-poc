@@ -2,14 +2,14 @@
 
 namespace TheSource\Domain\Contracts\Repositories;
 
-interface CommandRepository
+interface CommandsRepository
 {
 
     /**
      * In CQRS context, there must be a complimentary repository with
      * all the queries for the same aggregate root.
      *
-     * @return QueryRepository
+     * @return QueriesRepository
      */
-    public function getRelatedQueriesRepository(): QueryRepository;
+    public function getRelatedQueriesRepository(): QueriesRepository;
 }
