@@ -2,8 +2,6 @@
 
 namespace TheSource\Domain\Contracts;
 
-use stdClass;
-
 abstract class Entity
 {
     protected int $id;
