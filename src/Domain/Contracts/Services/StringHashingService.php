@@ -1,4 +1,5 @@
 <?php
+
 namespace TheSource\Domain\Contracts\Services;
 
 interface StringHashingService
@@ -19,5 +20,4 @@ interface StringHashingService
     // public function checkStrongHashMatches(string $originalValue): string;
 
     public function checkPasswordHashMatches(string $password, string $hashedPassword): bool;
-
 }

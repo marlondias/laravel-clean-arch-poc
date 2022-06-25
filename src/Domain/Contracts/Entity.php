@@ -3,7 +3,6 @@
 namespace TheSource\Domain\Contracts;
 
 use InvalidArgumentException;
-use TheSource\Domain\Contracts\Exceptions\InconsistentEntityException;
 
 abstract class Entity
 {
