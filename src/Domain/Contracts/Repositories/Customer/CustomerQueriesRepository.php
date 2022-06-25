@@ -5,6 +5,7 @@ namespace TheSource\Domain\Contracts\Repositories\Customer;
 use TheSource\Domain\Contracts\Exceptions\EntityNotFoundException;
 use TheSource\Domain\Contracts\Repositories\QueriesRepository;
 use TheSource\Domain\Entities\Customer;
+use TheSource\Domain\ValueObjects\EmailAddress;
 
 interface CustomerQueriesRepository extends QueriesRepository
 {
@@ -20,5 +21,5 @@ interface CustomerQueriesRepository extends QueriesRepository
      * @return Customer
      * @throws EntityNotFoundException
      */
-    public function findByEmail(string $email): Customer;
+    public function findByEmail(EmailAddress $email): Customer;
 }
