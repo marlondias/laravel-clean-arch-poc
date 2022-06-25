@@ -2,69 +2,71 @@
 
 namespace TheSource\Domain\Entities;
 
-class Product
+use DateTime;
+use InvalidArgumentException;
+use stdClass;
+use TheSource\Domain\Contracts\Entity;
+
+class Product extends Entity
 {
+    protected int $productCategoryId;
     protected string $name;
-    protected string $barCode;
-    protected string $type;
+    protected string $barCode; //TODO unique
+    protected ?DateTime $createdAt = null;
+    protected ?DateTime $updatedAt = null;
 
-    /**
-     * Get the value of name
-     */
-    public function getName()
+
+    public function toArray(): array
     {
-        return $this->name;
+        return [
+            'id' => $this->id ?? null,
+            'productCategoryId' => $this->productCategoryId ?? null,
+            'name' => $this->name ?? null,
+            'barCode' => $this->barCode ?? null,
+            'createdAt' => $this->createdAt?->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt?->format('Y-m-d H:i:s'),
+        ];
     }
 
-    /**
-     * Set the value of name
-     *
-     * @return  self
-     */
-    public function setName($name)
+    public function setProductCategoryId(int $id): self
     {
+        if ($id < 1) {
+            throw new InvalidArgumentException('ID de categoria do produto não pode ser nulo ou negativo.');
+        }
+        $this->productCategoryId = $id;
+        return $this;
+    }
+
+    public function setName(string $name): self
+    {
+        $name = trim($name);
+        if (empty($name)) {
+            throw new InvalidArgumentException('Nome do produto não pode ser string vazia.');
+        }
         $this->name = $name;
-
         return $this;
     }
 
-    /**
-     * Get the value of barCode
-     */
-    public function getBarCode()
+    public function setBarCode(string $barCode): self
     {
-        return $this->barCode;
-    }
-
-    /**
-     * Set the value of barCode
-     *
-     * @return  self
-     */
-    public function setBarCode($barCode)
-    {
+        $barCode = trim($barCode);
+        if (empty($barCode)) {
+            throw new InvalidArgumentException('Código de barras do produto não pode ser string vazia.');
+        }
         $this->barCode = $barCode;
-
         return $this;
     }
 
-    /**
-     * Get the value of type
-     */
-    public function getType()
+    public function setCreatedAt(string $dateTimeYMD): self
     {
-        return $this->type;
-    }
-
-    /**
-     * Set the value of type
-     *
-     * @return  self
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
+        $this->createdAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
     }
+
+    public function setUpdatedAt(string $dateTimeYMD): self
+    {
+        $this->updatedAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
+        return $this;
+    }
+
 }

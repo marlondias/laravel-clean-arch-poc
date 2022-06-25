@@ -12,7 +12,7 @@ use TheSource\Domain\ValueObjects\PersonName;
 final class User extends Entity
 {
     protected PersonName $name;
-    protected EmailAddress $email;
+    protected EmailAddress $email; //TODO unique
     protected string $hashedPassword;
     protected ?DateTime $emailVerifiedAt = null;
     protected ?DateTime $createdAt = null;

@@ -24,12 +24,6 @@ class Order extends Entity
         return [];
     }
 
-    public function toObject(): stdClass
-    {
-        //TODO
-        return new stdClass();
-    }
-
     public function getCustomerId(): int
     {
         return $this->customerId;
@@ -65,12 +59,12 @@ class Order extends Entity
         return $this->updatedAt;
     }
 
-    public function setCustomerId(int $value): self
+    public function setCustomerId(int $id): self
     {
-        if ($value < 1) {
-            throw new InvalidArgumentException('Foreign ID must be positive integer.');
+        if ($id < 1) {
+            throw new InvalidArgumentException('Customer ID must be positive number.');
         }
-        $this->customerId = $value;
+        $this->customerId = $id;
         return $this;
     }
 
@@ -89,41 +83,49 @@ class Order extends Entity
     {
         $value = trim($value);
         if (empty($value)) {
-            throw new InvalidArgumentException('Destination address must cannot be empty.');
+            throw new InvalidArgumentException('Destination address must not be empty.');
         }
         $this->destinationAddress = $value;
         return $this;
     }
 
-    public function setShippedAt(DateTime $value): self
+    public function setShippedAt(string $dateTimeYMD): self
     {
-        $this->shippedAt = $value;
+        $shippedAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
+        if (!is_object($shippedAt)) {
+            throw new InvalidArgumentException('Could not parse argument as timestamp for "ShippedAt".');
+        }
+        $this->shippedAt = $shippedAt;
         return $this;
     }
 
-    public function setDeliveredAt(DateTime $value): self
+    public function setDeliveredAt(string $dateTimeYMD): self
     {
-        // TIP: This is a smart setter method, ensures consistency
         if (!isset($this->shippedAt)) {
             throw new InvalidArgumentException('Cannot set "DeliveredAt" when order has no value for "ShippedAt".');
         }
-        if ($value < $this->shippedAt) {
-            throw new InvalidArgumentException('DateTime for "DeliveredAt" cannot be before "ShippedAt".');
+        $deliveredAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
+        if (!is_object($shippedAt)) {
+            throw new InvalidArgumentException('Could not parse argument as timestamp for "DeliveredAt".');
         }
-        $this->deliveredAt = $value;
+        if ($deliveredAt < $this->shippedAt) {
+            throw new InvalidArgumentException('Timestamp for "DeliveredAt" cannot be before "ShippedAt".');
+        }
+        $this->deliveredAt = $deliveredAt;
         return $this;
     }
 
-    public function setCreatedAt(DateTime $value): self
+    public function setCreatedAt(string $dateTimeYMD): self
     {
-        $this->createdAt = $value;
+        $this->createdAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
     }
 
-    public function setUpdatedAt(DateTime $value): self
+    public function setUpdatedAt(string $dateTimeYMD): self
     {
-        $this->updatedAt = $value;
+        $this->updatedAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
     }
+
 
 }

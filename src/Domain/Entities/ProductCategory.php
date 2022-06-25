@@ -7,7 +7,7 @@ use TheSource\Domain\Contracts\Entity;
 
 class ProductCategory extends Entity
 {
-    protected string $name; //unique
+    protected string $name; //TODO unique
     protected ?DateTime $createdAt = null;
     protected ?DateTime $updatedAt = null;
 
