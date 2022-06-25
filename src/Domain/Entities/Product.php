@@ -6,12 +6,14 @@ use DateTime;
 use InvalidArgumentException;
 use stdClass;
 use TheSource\Domain\Contracts\Entity;
+use TheSource\Domain\Contracts\Exceptions\EntityNotFoundException;
+use TheSource\Domain\Contracts\Repositories\Product\ProductQueriesRepository;
 
 class Product extends Entity
 {
     protected int $productCategoryId;
+    protected string $barCode;
     protected string $name;
-    protected string $barCode; //TODO unique
     protected ?DateTime $createdAt = null;
     protected ?DateTime $updatedAt = null;
 
@@ -69,4 +71,13 @@ class Product extends Entity
         return $this;
     }
 
+    public function isBarCodeAlreadyInUse(ProductQueriesRepository $repository, string $barCode): bool
+    {
+        try {
+            $repository->findByBarCode($barCode);
+            return true;
+        } catch (EntityNotFoundException $notFoundEx) {
+            return false;
+        }
+    }
 }

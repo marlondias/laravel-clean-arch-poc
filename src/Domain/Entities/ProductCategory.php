@@ -4,10 +4,12 @@ namespace TheSource\Domain\Entities;
 
 use DateTime;
 use TheSource\Domain\Contracts\Entity;
+use TheSource\Domain\Contracts\Exceptions\EntityNotFoundException;
+use TheSource\Domain\Contracts\Repositories\ProductCategory\ProductCategoryQueriesRepository;
 
 class ProductCategory extends Entity
 {
-    protected string $name; //TODO unique
+    protected string $name;
     protected ?DateTime $createdAt = null;
     protected ?DateTime $updatedAt = null;
 
@@ -53,5 +55,15 @@ class ProductCategory extends Entity
     {
         $this->updatedAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
+    }
+
+    public function isNameAlreadyInUse(ProductCategoryQueriesRepository $repository, string $name): bool
+    {
+        try {
+            $repository->findByName($name);
+            return true;
+        } catch (EntityNotFoundException $notFoundEx) {
+            return false;
+        }
     }
 }

@@ -5,6 +5,8 @@ namespace TheSource\Domain\Entities;
 use DateTime;
 use DomainException;
 use TheSource\Domain\Contracts\Entity;
+use TheSource\Domain\Contracts\Exceptions\EntityNotFoundException;
+use TheSource\Domain\Contracts\Repositories\User\UserQueriesRepository;
 use TheSource\Domain\Contracts\Services\StringHashingService;
 use TheSource\Domain\ValueObjects\EmailAddress;
 use TheSource\Domain\ValueObjects\PersonName;
@@ -12,7 +14,7 @@ use TheSource\Domain\ValueObjects\PersonName;
 final class User extends Entity
 {
     protected PersonName $name;
-    protected EmailAddress $email; //TODO unique
+    protected EmailAddress $email;
     protected string $hashedPassword;
     protected ?DateTime $emailVerifiedAt = null;
     protected ?DateTime $createdAt = null;
@@ -161,4 +163,15 @@ final class User extends Entity
             throw new DomainException("A senha de usuário só pode conter símbolos válidos ({$symbols}) e nenhum outro.");
         }
     }
+
+    public function isEmailAddressAlreadyInUse(UserQueriesRepository $repository, EmailAddress $emailAddress): bool
+    {
+        try {
+            $repository->findByEmail($emailAddress);
+            return true;
+        } catch (EntityNotFoundException $notFoundEx) {
+            return false;
+        }
+    }
+
 }

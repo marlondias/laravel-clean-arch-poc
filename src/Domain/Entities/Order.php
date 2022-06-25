@@ -6,10 +6,12 @@ use DateTime;
 use InvalidArgumentException;
 use stdClass;
 use TheSource\Domain\Contracts\Entity;
+use TheSource\Domain\Contracts\Exceptions\EntityNotFoundException;
+use TheSource\Domain\Contracts\Repositories\Order\OrderQueriesRepository;
 
 class Order extends Entity
 {
-    protected int $customerId; //TODO: fk
+    protected int $customerId;
     protected string $invoiceNumber;
     protected string $destinationAddress;
     protected ?DateTime $shippedAt = null;
@@ -127,5 +129,13 @@ class Order extends Entity
         return $this;
     }
 
-
+    public function isInvoiceNumberAlreadyInUse(OrderQueriesRepository $repository, string $invoiceNumber): bool
+    {
+        try {
+            $repository->findByInvoiceNumber($invoiceNumber);
+            return true;
+        } catch (EntityNotFoundException $notFoundEx) {
+            return false;
+        }
+    }
 }

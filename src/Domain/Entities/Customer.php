@@ -5,14 +5,16 @@ namespace TheSource\Domain\Entities;
 use DateTime;
 use InvalidArgumentException;
 use TheSource\Domain\Contracts\Entity;
+use TheSource\Domain\Contracts\Exceptions\EntityNotFoundException;
+use TheSource\Domain\Contracts\Repositories\Customer\CustomerQueriesRepository;
 use TheSource\Domain\ValueObjects\EmailAddress;
 use TheSource\Domain\ValueObjects\PersonGender;
 use TheSource\Domain\ValueObjects\PersonName;
 
 class Customer extends Entity
 {
-    protected PersonName $name;
     protected EmailAddress $email;
+    protected PersonName $name;
     protected DateTime $birthDate;
     protected ?PersonGender $gender = null;
     protected ?DateTime $createdAt = null;
@@ -31,15 +33,14 @@ class Customer extends Entity
         ];
     }
 
+    public function getEmailAddress(): EmailAddress
+    {
+        return $this->email;
+    }
 
     public function getName(): PersonName
     {
         return $this->name;
-    }
-
-    public function getEmailAddress(): EmailAddress
-    {
-        return $this->email;
     }
 
     public function getBirthDate(): DateTime
@@ -62,15 +63,15 @@ class Customer extends Entity
         return $this->updatedAt;
     }
 
-    public function setPersonName(string $firstName, string $lastName): self
-    {
-        $this->name = new PersonName($firstName, $lastName);
-        return $this;
-    }
-
     public function setEmailAddress(string $emailAddress): self
     {
         $this->email = new EmailAddress($emailAddress);
+        return $this;
+    }
+
+    public function setPersonName(string $firstName, string $lastName): self
+    {
+        $this->name = new PersonName($firstName, $lastName);
         return $this;
     }
 
@@ -105,5 +106,15 @@ class Customer extends Entity
     {
         $this->updatedAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
+    }
+
+    public function isEmailAddressAlreadyInUse(CustomerQueriesRepository $repository, EmailAddress $emailAddress): bool
+    {
+        try {
+            $repository->findByEmail($emailAddress);
+            return true;
+        } catch (EntityNotFoundException $notFoundEx) {
+            return false;
+        }
     }
 }
