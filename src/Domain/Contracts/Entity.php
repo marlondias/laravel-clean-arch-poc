@@ -2,17 +2,23 @@
 
 namespace TheSource\Domain\Contracts;
 
+use InvalidArgumentException;
+use TheSource\Domain\Contracts\Exceptions\InconsistentEntityException;
+
 abstract class Entity
 {
     protected int $id;
 
     public function getId(): ?int
     {
-        return isset($this->id) ? $this->id : null;
+        return $this->id ?? null;
     }
 
     public function setId(int $value): self
     {
+        if ($value < 1) {
+            throw new InvalidArgumentException('ID da entidade não pode ser nulo ou negativo.');
+        }
         $this->id = $value;
         return $this;
     }
