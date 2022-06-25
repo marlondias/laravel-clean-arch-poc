@@ -22,13 +22,13 @@ final class User extends Entity
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name->toArray(),
-            'email' => $this->email->toArray(),
-            'hashedPassword' => $this->hashedPassword,
-            'emailVerifiedAt' => $this->emailVerifiedAt->format('Y-m-d H:i:s'),
-            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
+            'id' => $this->id ?? null,
+            'name' => $this->name?->toArray(),
+            'email' => $this->email?->toArray(),
+            'hashedPassword' => $this->hashedPassword ?? null,
+            'emailVerifiedAt' => $this->emailVerifiedAt?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->createdAt?->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt?->format('Y-m-d H:i:s'),
         ];
     }
 
@@ -91,19 +91,19 @@ final class User extends Entity
 
     public function setEmailVerifiedAt(string $dateTimeYMD): self
     {
-        $this->emailVerifiedAt = DateTime::createFromFormat('Y-m-d', $dateTimeYMD);
+        $this->emailVerifiedAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
     }
 
     public function setCreatedAt(string $dateTimeYMD): self
     {
-        $this->createdAt = DateTime::createFromFormat('Y-m-d', $dateTimeYMD);
+        $this->createdAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
     }
 
     public function setUpdatedAt(string $dateTimeYMD): self
     {
-        $this->updatedAt = DateTime::createFromFormat('Y-m-d', $dateTimeYMD);
+        $this->updatedAt = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeYMD);
         return $this;
     }
 
