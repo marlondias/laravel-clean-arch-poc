@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id');
-            $table->string('invoice_number');
+            $table->string('invoice_number')->unique();
             $table->string('destination_address');
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('delivered_at')->nullable();

@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('email')->unique();
             $table->string('first_name');
             $table->string('last_name');
             $table->date('birth_date');
             $table->enum('gender', ['male', 'female', 'non-binary'])->nullable();
-            $table->string('email');
             $table->timestamps();
         });
     }
