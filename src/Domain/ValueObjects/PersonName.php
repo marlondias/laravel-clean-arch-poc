@@ -2,6 +2,7 @@
 
 namespace TheSource\Domain\ValueObjects;
 
+use DomainException;
 use InvalidArgumentException;
 use TheSource\Domain\Contracts\ValueObject;
 
@@ -22,6 +23,9 @@ final class PersonName implements ValueObject
         $lastName = trim($lastName);
         if (empty($firstName)) {
             throw new InvalidArgumentException('Primeiro nome não pode ser string vazia.');
+        }
+        if (strlen($firstName) > 40) {
+            throw new DomainException('Primeiro nome não pode ter mais de 40 caracteres.');
         }
         $this->firstName = $firstName;
         $this->lastName = $lastName;

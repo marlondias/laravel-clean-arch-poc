@@ -64,9 +64,6 @@ final class User extends Entity
 
     public function setPersonName(string $firstName, string $lastName): self
     {
-        if (strlen($firstName) > 40) {
-            throw new DomainException('Primeiro nome não pode ter mais de 40 caracteres.');
-        }
         $this->name = new PersonName($firstName, $lastName);
         return $this;
     }
