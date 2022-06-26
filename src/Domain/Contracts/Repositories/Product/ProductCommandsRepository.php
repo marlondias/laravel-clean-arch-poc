@@ -35,5 +35,4 @@ interface ProductCommandsRepository extends CommandsRepository
      * @throws Exception
      */
     public function deleteByEntity(Product $product): void;
-    //TODO
 }

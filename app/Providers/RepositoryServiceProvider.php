@@ -15,7 +15,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ProductRepository::class, ProductRepositoryImpl::class);
+        // TODO: create and inject new repositories
+        // $this->app->bind(ProductRepository::class, ProductRepositoryImpl::class);
     }
 
     /**

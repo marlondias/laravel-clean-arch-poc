@@ -35,5 +35,4 @@ interface OrderCommandsRepository extends CommandsRepository
      * @throws Exception
      */
     public function deleteByEntity(Order $order): void;
-    //TODO
 }

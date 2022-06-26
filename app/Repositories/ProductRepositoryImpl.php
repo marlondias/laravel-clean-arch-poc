@@ -2,16 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Traits\CachesMethodReturnsTrait;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use TheSource\Domain\Contracts\Repositories\ProductRepository;
-use TheSource\Domain\Entities\Product;
+use TheSource\Domain\Contracts\Repositories\Product\ProductCommandsRepository;
+use TheSource\Domain\Contracts\Repositories\Product\ProductQueriesRepository;
 
-class ProductRepositoryImpl implements ProductRepository
+class ProductRepositoryImpl implements ProductCommandsRepository, ProductQueriesRepository
 {
-    use CachesMethodReturnsTrait;
+
+    //
 
     public function getRandomProducts(int $amount): array
     {
@@ -29,11 +27,7 @@ class ProductRepositoryImpl implements ProductRepository
             'name' => $product->getName(),
             'bar_code' => $product->getBarCode(),
             'type' => $product->getType(),
-        ])
-
-
-
-
+        ]);
 
         $inputVariant = json_encode($product);
         $cacheKey = $this->getCacheKey(__FUNCTION__, $inputVariant);
