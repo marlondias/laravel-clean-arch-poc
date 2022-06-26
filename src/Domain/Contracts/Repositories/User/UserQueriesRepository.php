@@ -23,4 +23,10 @@ interface UserQueriesRepository extends QueriesRepository
      * @throws EntityNotFoundException
      */
     public function findByEmail(EmailAddress $emailAddress): User;
+
+    /**
+     * @return User[]
+     */
+    public function getAll(): array;
+
 }
