@@ -22,8 +22,16 @@ class Order extends Entity
 
     public function toArray(): array
     {
-        //TODO
-        return [];
+        return [
+            'id' => $this->id ?? null,
+            'customerId' => $this->customerId ?? null,
+            'invoiceNumber' => $this->invoiceNumber ?? null,
+            'destinationAddress' => $this->destinationAddress ?? null,
+            'shippedAt' => $this->shippedAt?->format('Y-m-d H:i:s'),
+            'deliveredAt' => $this->deliveredAt?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->createdAt?->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt?->format('Y-m-d H:i:s'),
+        ];
     }
 
     public function getCustomerId(): int
