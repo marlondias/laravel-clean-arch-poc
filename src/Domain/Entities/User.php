@@ -39,7 +39,7 @@ final class User extends Entity
         return $this->name;
     }
 
-    public function getEmail(): EmailAddress
+    public function getEmailAddress(): EmailAddress
     {
         return $this->email;
     }
@@ -115,9 +115,6 @@ final class User extends Entity
      */
     public function setHashedPasswordFromPlainText(StringHashingService $stringHashingService, string $plainTextPassword): self
     {
-        if (strlen($plainTextPassword) < 5 || strlen($plainTextPassword) > 30) {
-            throw new DomainException('A senha de usuário deve conter entre 5 e 30 caracteres.');
-        }
         $this->validatePasswordContent($plainTextPassword);
         $this->hashedPassword = $stringHashingService->getPasswordHash($plainTextPassword);
         return $this;
@@ -133,38 +130,48 @@ final class User extends Entity
 
     private function validatePasswordContent(string $password): void
     {
-        $regexLowerCaseLetter = '/.*[a-z]/';
-        $regexUpperCaseLetter = '/.*[A-Z]/';
-        $regexNumber = '/.*[\d]/';
-        $regexSpace = '/.*[\s]/';
-        $regexValidSymbol = '/.*[\!\@\#\$\%\&\*\-\_\=\+\~\^\?]/';
-        $regexAnyValidCharacter = '/[\!\@\#\$\%\&\*\-\_\=\+\~\^\?\d\w]/';
-
-        if (preg_match($regexLowerCaseLetter, $password) === false) {
-            throw new DomainException('A senha de usuário deve conter alguma letra minúscula.');
+        if (strlen($password) < 5 || strlen($password) > 30) {
+            throw new DomainException('A senha de usuário deve conter entre 5 e 30 caracteres.');
         }
-        if (preg_match($regexUpperCaseLetter, $password) === false) {
-            throw new DomainException('A senha de usuário deve conter alguma letra maiúscula.');
-        }
-        if (preg_match($regexNumber, $password) === false) {
-            throw new DomainException('A senha de usuário deve conter algum número.');
-        }
-        if (preg_match($regexSpace, $password) !== false) {
+        if (str_replace(' ', '', $password) !== $password) {
             throw new DomainException('A senha de usuário não pode conter espaços.');
         }
-        if (preg_match($regexValidSymbol, $password) === false) {
+
+        $regexNumber = '/[\d]/';
+        if (!preg_match($regexNumber, $password, $matches)) {
+            throw new DomainException('A senha de usuário deve conter algum número.');
+        }
+
+        $regexLowerCaseLetter = '/[a-z]/';
+        if (!preg_match($regexLowerCaseLetter, $password)) {
+            throw new DomainException('A senha de usuário deve conter alguma letra minúscula.');
+        }
+
+        $regexUpperCaseLetter = '/[A-Z]/';
+        if (!preg_match($regexUpperCaseLetter, $password)) {
+            throw new DomainException('A senha de usuário deve conter alguma letra maiúscula.');
+        }
+
+        $regexValidSymbol = '/[\!\@\#\$\%\&\*\-\_\=\+\~\^\?]/';
+        if (!preg_match($regexValidSymbol, $password)) {
             $symbols = '! @ # $ % & * - _ = + ~ ^ ?';
             throw new DomainException("A senha de usuário deve conter algum símbolo válido ({$symbols}).");
         }
 
-        $onlyInvalidSymbols = str_replace($regexAnyValidCharacter, '', $password);
+        $onlyInvalidSymbols = preg_replace([
+            $regexValidSymbol,
+            $regexLowerCaseLetter,
+            $regexUpperCaseLetter,
+            $regexNumber
+        ], '', $password);
+
         if (!empty($onlyInvalidSymbols)) {
             $symbols = '! @ # $ % & * - _ = + ~ ^ ?';
             throw new DomainException("A senha de usuário só pode conter símbolos válidos ({$symbols}) e nenhum outro.");
         }
     }
 
-    public function isEmailAddressAlreadyInUse(UserQueriesRepository $repository, EmailAddress $emailAddress): bool
+    public function isEmailAddressAlreadyInUse(UserQueriesRepository $repository, ?EmailAddress $emailAddress = null): bool
     {
         try {
             $repository->findByEmail($emailAddress);
