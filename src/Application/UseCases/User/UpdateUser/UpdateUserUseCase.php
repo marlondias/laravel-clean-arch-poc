@@ -8,7 +8,7 @@ use TheSource\Domain\Contracts\Repositories\User\UserQueriesRepository;
 use TheSource\Domain\Contracts\Services\StringHashingService;
 use TheSource\Domain\Entities\User;
 
-final class DeleteUserUseCase implements UseCaseInteractor
+final class UpdateUserUseCase implements UseCaseInteractor
 {
     private UserCommandsRepository $userCommandsRepository;
     private UserQueriesRepository $userQueriesRepository;

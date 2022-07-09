@@ -33,10 +33,11 @@ Route::group(
         Route::post('/', 'store');
         Route::get('/{id}', 'show');
         Route::put('/{id}', 'update');
-        Route::delete('/{id}', 'delete');
+        Route::delete('/{id}', 'destroy');
     }
 );
 
+/*
 Route::group(
     [
         'prefix' => '/customers',
@@ -96,3 +97,5 @@ Route::group(
         Route::delete('/{id}', 'delete');
     }
 );
+
+*/

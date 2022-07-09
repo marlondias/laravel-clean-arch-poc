@@ -29,7 +29,7 @@ final class PersonName implements ValueObject
         }
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->fullName = $firstName . (empty($lastName) ? " {$lastName}" : '');
+        $this->fullName = $firstName . (!empty($lastName) ? " {$lastName}" : '');
     }
 
     public function toArray(): array

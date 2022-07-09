@@ -19,7 +19,7 @@ final class EmailAddress implements ValueObject
         }
         $regexValidEmail = '/^[^\.]([\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~\.\w\d]+)[^\.]@([\-\.\w\d]+)$/i';
         $emailParts = [];
-        if (preg_match($regexValidEmail, $emailAddress, $emailParts)) {
+        if (preg_match($regexValidEmail, $emailAddress, $emailParts) === false) {
             throw new InvalidArgumentException('Endereço de e-mail não está em formato válido.');
         }
         $this->fullAddress = $emailAddress;
