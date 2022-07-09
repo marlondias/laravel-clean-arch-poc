@@ -30,10 +30,4 @@ interface UserCommandsRepository extends CommandsRepository
      */
     public function deleteById(int $id): void;
 
-    /**
-     * @param User $user
-     * @return void
-     * @throws Exception
-     */
-    public function deleteByEntity(User $user): void;
 }

@@ -11,5 +11,5 @@ interface CommandsRepository
      *
      * @return QueriesRepository
      */
-    public function getRelatedQueriesRepository(): QueriesRepository;
+    // public function getRelatedQueriesRepository(): QueriesRepository;
 }
